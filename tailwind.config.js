@@ -1,6 +1,7 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 
+
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
@@ -8,7 +9,9 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         "./resources/js/Layouts/*.{js,jsx,ts,tsx}",
+        "./resources/js/Components/*.{js,jsx,ts,tsx}",
         "./resources/js/Pages/*.{js,jsx,ts,tsx}",
+        "./node_modules/tw-elements/js/**/*.js"
     ],
 
     theme: {
@@ -19,5 +22,5 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, require("tw-elements-react/dist/plugin.cjs")],
 };
