@@ -1,0 +1,57 @@
+version: '2'
+services:
+    nginx:
+        build:
+            context: ./
+            dockerfile: docker/nginx.docker
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/ssl:/etc/nginx/ssl
+        ports:
+            - "443:443"
+        links:
+            - php-fpm
+    php-fpm:
+        build:
+            context: ./
+            dockerfile: docker/php-fpm.docker
+        volumes:
+            - ./:/var/www
+        links:
+            - postgres
+            - redis
+        environment:
+            - "DB_PORT=5432"
+            - "DB_HOST=postgres"
+            - "REDIS_PORT=6379"
+            - "REDIS_HOST=redis"
+    php-cli:
+        build:
+            context: ./
+            dockerfile: docker/php-cli.docker
+        volumes:
+            - ./:/var/www
+        links:
+            - postgres
+            - redis
+        environment:
+            - "DB_PORT=5432"
+            - "DB_HOST=postgres"
+            - "REDIS_PORT=6379"
+            - "REDIS_HOST=redis"
+        tty: true
+    postgres:
+        image: postgres
+        volumes:
+            - ./storage/docker/postgresql:/var/lib/postgresql/data
+        environment:
+            - "POSTGRES_USER=app"
+            - "POSTGRES_PASSWORD=secret"
+            - "POSTGRES_DB=app"
+            - "PGDATA=/var/lib/postgresql/data/pgdata"
+        ports:
+            - "54321:5432"
+    redis:
+        image: redis:3.0
+        ports:
+            - "63791:6379"
