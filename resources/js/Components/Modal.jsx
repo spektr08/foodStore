@@ -1,4 +1,6 @@
 import React from "react";
+import { Bars3Icon, XMarkIcon,  ShoppingBagIcon } from '@heroicons/react/24/outline'
+
 
 export default function Modal(props) {
   
@@ -22,15 +24,13 @@ export default function Modal(props) {
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-3xl font-semibold">
-                    Modal Title
+                   
                   </h3>
                   <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    className=""
                     onClick={() => props.setShowModal(false)}
                   >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
+                    <XMarkIcon className="text-black block h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 {/*body*/}
@@ -38,7 +38,7 @@ export default function Modal(props) {
                  {props.children}
                 </div>
                 {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                {/* <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
@@ -53,7 +53,7 @@ export default function Modal(props) {
                   >
                     Save Changes
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@ import Home from "../Pages/Home";
 import NavBar from "../Components/Navbar";
 
 
-function App() {
+function App() {    
   return (
     <>
     <NavBar />

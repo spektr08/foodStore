@@ -1,6 +1,9 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon,  ShoppingBagIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon,  ShoppingBagIcon } from '@heroicons/react/24/outline'
+import useUserStore from "../store/user";
+import Modal from './Modal';
+import Login from '../Components/Login';
 
 const navigation = [
   { name: 'Home', href: '/', current: true },
@@ -11,7 +14,21 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const [user,  logout] = useUserStore((state) => [
+    state.user,
+    state.logout
+  ]);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  const showLogin = () => {
+    setIsLoginOpen(true);
+  }
+
+  const showSignIn = () => {
+    
+  }
   return (
+    <>
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <>
@@ -66,6 +83,7 @@ export default function Example() {
                 </button>
 
                 {/* Profile dropdown */}
+                {user ? 
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -113,6 +131,7 @@ export default function Example() {
                           <a
                             href="#"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            onClick={logout}
                           >
                             Sign out
                           </a>
@@ -120,7 +139,25 @@ export default function Example() {
                       </Menu.Item>
                     </Menu.Items>
                   </Transition>
-                </Menu>
+                </Menu> 
+                 : 
+                <> 
+                <a
+                  href="#"
+                  onClick={showLogin}
+                  className={classNames('text-gray-300 hover:bg-gray-700 hover:text-white','rounded-md px-3 py-2 text-sm font-medium')}
+                >
+                  Login
+                </a>
+                <a
+                href="#"
+                onClick={showSignIn}
+                className={classNames('text-gray-300 hover:bg-gray-700 hover:text-white','rounded-md px-3 py-2 text-sm font-medium')}
+                >
+                  Sin in
+                </a>
+                </>
+                }
               </div>
             </div>
           </div>
@@ -146,5 +183,9 @@ export default function Example() {
         </>
       )}
     </Disclosure>
+    <Modal showModal={isLoginOpen} setShowModal={setIsLoginOpen} >
+    <Login setShowModal={setIsLoginOpen} />
+    </Modal>
+    </>
   )
 }

@@ -10,8 +10,7 @@ export default {
         './resources/views/**/*.blade.php',
         "./resources/js/Layouts/*.{js,jsx,ts,tsx}",
         "./resources/js/Components/*.{js,jsx,ts,tsx}",
-        "./resources/js/Pages/*.{js,jsx,ts,tsx}",
-        "./node_modules/tw-elements/js/**/*.js"
+        "./resources/js/Pages/*.{js,jsx,ts,tsx}"
     ],
 
     theme: {
@@ -22,5 +21,5 @@ export default {
         },
     },
 
-    plugins: [forms, require("tw-elements-react/dist/plugin.cjs")],
+    plugins: [forms],
 };
