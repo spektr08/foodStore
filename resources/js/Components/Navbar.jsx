@@ -4,6 +4,8 @@ import { Bars3Icon, XMarkIcon,  ShoppingBagIcon } from '@heroicons/react/24/outl
 import useUserStore from "../store/user";
 import Modal from './Modal';
 import Login from '../Components/Login';
+import CartComponentWithModal from '../Components/CartComponentWithModal';
+import useCartStore from "../store/cart";
 
 const navigation = [
   { name: 'Home', href: '/', current: true },
@@ -13,12 +15,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function NavBar() {
   const [user,  logout] = useUserStore((state) => [
     state.user,
     state.logout
   ]);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isCartOpen, setCartOpen] = useState(false);
+  const [quantity] = useCartStore((state) => [
+    state.quantity
+  ]);
 
   const showLogin = () => {
     setIsLoginOpen(true);
@@ -27,11 +33,15 @@ export default function Example() {
   const showSignIn = () => {
     
   }
+  const toggleModal = () => {
+    setCartOpen(!isCartOpen);
+  };
   return (
     <>
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <>
+          <CartComponentWithModal isCartOpen={isCartOpen} setCartOpen={setCartOpen} />
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -72,11 +82,18 @@ export default function Example() {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="flex inset-y-0 right-0 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
+                  onClick={toggleModal}
                   type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="relative  inline-flex w-fit rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
+                  { quantity() >0 &&  <div
+                    className="absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 whitespace-nowrap rounded-full bg-indigo-700 px-2.5 py-1 text-center align-baseline text-xs font-bold leading-none text-white">
+                    {quantity()}
+                    </div> 
+                  }
+                  
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
                   <ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />

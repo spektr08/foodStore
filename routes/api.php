@@ -9,7 +9,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-
+Route::get('/products', [ProductsController::class, 'index']);
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/products', [ProductsController::class, 'index']);
+   
 });

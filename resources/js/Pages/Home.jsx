@@ -3,19 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from "../Components/Modal";
 import Login from '../Components/Login';
 import Loader from '../Components/Loader';
-
-
-const products = [
-  {
-    id: 1,
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: '/images/coming.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-  },
-]
+import useCartStore from "../store/cart";
 
 export default  function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +11,13 @@ export default  function Home() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(null);
-  
+  const [initialCartProducts, setCartProduct] = useCartStore((state) => [
+    state.initialCartProducts,
+    state.setCartProduct,
+  ]);
+  const addToCart = (product) => {
+    setCartProduct(product);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -52,7 +46,7 @@ export default  function Home() {
         {loading && <Loader/> }
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {!loading && products.map((product) => (
-            <div key={product.id} className="group relative">
+            <div key={product.id} className="group relative min-h-[500px]">
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <img
                   src="/images/coming.jpg"
@@ -70,8 +64,17 @@ export default  function Home() {
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">{product.description}</p>
                 </div>
-                <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                <p className="text-sm font-medium text-gray-900">{product.price/100}&nbsp;€</p>
               </div>
+              <div className='flex'>
+                <button
+                  onClick={() => addToCart(product)}
+                  className="absolute bottom-0 px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-blue-500 hover:text-white disabled:opacity-50"
+                >
+                  Add to cart 
+                </button>
+              </div>
+              
             </div>
           ))}
         </div>
