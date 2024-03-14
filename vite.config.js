@@ -14,4 +14,7 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        target: "ES2022" 
+    }
 });

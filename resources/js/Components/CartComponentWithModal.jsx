@@ -3,12 +3,13 @@ import useCartStore from "../store/cart";
 
 
 const CartComponentWithModal = (props) => {
-  const [products, setProducts, notes, setNotes, priceAll] = useCartStore((state) => [
+  const [products, setProducts, notes, setNotes, priceAll, clearCart] = useCartStore((state) => [
     state.initialCartProducts,
     state.setCartProducts,
     state.notes,
     state.setNotes,
-    state.priceAll
+    state.priceAll,
+    state.clearCart
   ]);
  
   const updateQuantity = (id, delta) => {
@@ -30,9 +31,13 @@ const CartComponentWithModal = (props) => {
     props.setCartOpen(!props.isCartOpen);
   };
 
-  const handleSubmit = () => {
-
+  const handleSubmit = async () => {
+    await axios.post('/api/order', {
+      products,
+      notes
+    });
     props.setCartOpen(false);
+    clearCart();
   }
 
   return (

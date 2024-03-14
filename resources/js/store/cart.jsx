@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-
+import { quantity, priceAll} from '../lib/orderCalulations'
 
 const loadStateFromLocalStorage = () => {
     const stateFromStorage = localStorage.getItem('cart');
@@ -32,19 +32,11 @@ const useCartStore = create((set, get) => ({
     setCartProducts: (products) => set({ initialCartProducts: products }),
     quantity: () => {
         let newInitialCartProducts =  get().initialCartProducts;
-        let quantity = 0;
-        newInitialCartProducts.forEach((element, index) => {
-            quantity = quantity + element.quantity;
-        });
-        return quantity;
+        return quantity(newInitialCartProducts)
     },
     priceAll: () => {
         let newInitialCartProducts =  get().initialCartProducts;
-        let price = 0;
-        newInitialCartProducts.forEach((element, index) => {
-            price = price + (element.price * element.quantity);
-        });
-        return price;
+        return priceAll(newInitialCartProducts)
     }
 }))
 

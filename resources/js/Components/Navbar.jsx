@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon,  ShoppingBagIcon } from '@heroicons/react/24/outline'
 import useUserStore from "../store/user";
@@ -20,6 +21,7 @@ export default function NavBar() {
     state.user,
     state.logout
   ]);
+  const [isOpen, setIsOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
   const [quantity] = useCartStore((state) => [
@@ -38,7 +40,7 @@ export default function NavBar() {
   };
   return (
     <>
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure open={isOpen} onChange={() => setIsOpen(!isOpen)} as="nav" className="bg-gray-800">
       {({ open }) => (
         <>
           <CartComponentWithModal isCartOpen={isCartOpen} setCartOpen={setCartOpen} />
@@ -67,9 +69,9 @@ export default function NavBar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
@@ -77,7 +79,7 @@ export default function NavBar() {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -182,10 +184,13 @@ export default function NavBar() {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <Link
                   key={item.name}
-                  as="a"
-                  href={item.href}
+                  to={item.href}
+                  onClick={() => {
+                   
+                    setIsOpen(true);
+                  }}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium'
@@ -193,7 +198,7 @@ export default function NavBar() {
                   aria-current={item.current ? 'page' : undefined}
                 >
                   {item.name}
-                </Disclosure.Button>
+                </Link>
               ))}
             </div>
           </Disclosure.Panel>

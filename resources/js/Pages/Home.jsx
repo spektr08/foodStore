@@ -22,7 +22,7 @@ export default  function Home() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      let products =  await axios.get(`https://localhost/api/products?page=${currentPage}`);
+      let products =  await axios.get(`/api/products?page=${currentPage}`);
       setProducts(products.data.data);
       setLastPage(products.data.last_page);
       setLoading(false);

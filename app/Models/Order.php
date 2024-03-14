@@ -2,20 +2,30 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
       protected $fillable = [
-        'name',
-        'description',
-        'price',
+        'notes',
+        'user_id',
+        'status',
+        'products'
     ];
 
-
-    public function products(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(Product::class, 'order_product');
+        return $this->belongsTo(User::class);
+    }
+
+
+    protected function products(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => json_decode($value, true),
+            set: fn($value) => json_encode($value),
+        );
     }
 
 }

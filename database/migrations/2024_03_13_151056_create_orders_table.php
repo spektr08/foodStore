@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('note');
+            $table->string('notes');
             $table->enum('status', ['open', 'inprogress', 'done']);
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
