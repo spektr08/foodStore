@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useCartStore from "../store/cart";
-
+import { useNavigate } from "react-router-dom";
 
 const CartComponentWithModal = (props) => {
   const [products, setProducts, notes, setNotes, priceAll, clearCart] = useCartStore((state) => [
@@ -11,7 +11,7 @@ const CartComponentWithModal = (props) => {
     state.priceAll,
     state.clearCart
   ]);
- 
+  const navigate = useNavigate();
   const updateQuantity = (id, delta) => {
     const updatedProducts = products.map((product) => {
       if (product.id === id) {
@@ -32,12 +32,15 @@ const CartComponentWithModal = (props) => {
   };
 
   const handleSubmit = async () => {
-    await axios.post('/api/order', {
+    const order = await axios.post('/api/order', {
       products,
       notes
     });
+    console.log(order);
+    navigate(`/order/${order?.data?.data.id}`);
     props.setCartOpen(false);
     clearCart();
+    
   }
 
   return (
