@@ -14,6 +14,13 @@ const useUserStore = create((set) => ({
     set({ user: user.data })
     return user;
   },
+  register: async (creds) => {
+    await axios.get('/sanctum/csrf-clookie');
+    await axios.post('/register', creds);
+    let user = await axios.get('/api/user');
+    set({ user: user.data })
+    return user;
+  },
   logout: async () => {
     await axios.post('/logout');
     set({ user: false })

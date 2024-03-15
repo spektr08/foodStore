@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon,  ShoppingBagIcon } from '@heroicons/react/24/outl
 import useUserStore from "../store/user";
 import Modal from './Modal';
 import Login from '../Components/Login';
+import SignUpForm from '../Components/SignUpForm';
 import CartComponentWithModal from '../Components/CartComponentWithModal';
 import useCartStore from "../store/cart";
 
@@ -23,6 +24,7 @@ export default function NavBar() {
   ]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignFormOpen, setIsSignFormOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
   const [quantity] = useCartStore((state) => [
     state.quantity
@@ -34,7 +36,7 @@ export default function NavBar() {
   }
 
   const showSignIn = () => {
-    
+    setIsSignFormOpen(true)
   }
   const toggleModal = () => {
     setCartOpen(!isCartOpen);
@@ -174,7 +176,7 @@ export default function NavBar() {
                 onClick={showSignIn}
                 className={classNames('text-gray-300 hover:bg-gray-700 hover:text-white','rounded-md px-3 py-2 text-sm font-medium')}
                 >
-                  Sin in
+                  Sin up
                 </a>
                 </>
                 }
@@ -208,6 +210,9 @@ export default function NavBar() {
     </Disclosure>
     <Modal showModal={isLoginOpen} setShowModal={setIsLoginOpen} >
     <Login setShowModal={setIsLoginOpen} />
+    </Modal>
+    <Modal showModal={isSignFormOpen} setShowModal={setIsSignFormOpen} >
+    <SignUpForm setShowModal={setIsSignFormOpen} />
     </Modal>
     </>
   )
