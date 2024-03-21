@@ -78,7 +78,7 @@ export default  function Home() {
             </div>
           ))}
         </div>
-        { products.length && 
+        { products.length > 0 && 
           <div className="flex justify-center items-center space-x-2 mt-4">
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
