@@ -26,9 +26,8 @@ export default function NavBar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignFormOpen, setIsSignFormOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
-  const [quantity] = useCartStore((state) => [
-    state.quantity
-  ]);
+  const {quantity} = useCartStore();
+
   const disclosure  = useRef(null);
 
   const showLogin = () => {
@@ -93,9 +92,9 @@ export default function NavBar() {
                   type="button"
                   className="relative  inline-flex w-fit rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
-                  { quantity() >0 &&  <div
+                  { quantity >0 &&  <div
                     className="absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 whitespace-nowrap rounded-full bg-indigo-700 px-2.5 py-1 text-center align-baseline text-xs font-bold leading-none text-white">
-                    {quantity()}
+                    {quantity}
                     </div> 
                   }
                   

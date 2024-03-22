@@ -12,7 +12,6 @@ export default  function Order() {
     async function fetchData() {
       setLoading(true);
       let order_res =  await axios.get(`/api/order/${id}`);
-      console.log(order_res);
       setOrder(order_res.data);
       setLoading(false);
     }

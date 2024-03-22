@@ -24,6 +24,7 @@
         "react-router-dom": "^6.22.3",
         "tw-elements-react": "^1.0.0-alpha2",
         "vite-plugin-require": "^1.1.14",
-        "zustand": "^4.5.2"
+        "zustand": "^4.5.2",
+        "zustand-middleware-computed-state": "^0.1.3"
     }
 }

@@ -11,8 +11,7 @@ export default  function Home() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(null);
-  const [initialCartProducts, setCartProduct] = useCartStore((state) => [
-    state.initialCartProducts,
+  const [setCartProduct] = useCartStore((state) => [
     state.setCartProduct,
   ]);
   const addToCart = (product) => {

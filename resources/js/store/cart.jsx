@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { quantity, priceAll} from '../lib/orderCalulations'
+import { computed } from 'zustand-middleware-computed-state'
 
 const loadStateFromLocalStorage = () => {
     const stateFromStorage = localStorage.getItem('cart');
@@ -11,7 +12,8 @@ const loadStateFromLocalStorage = () => {
 
 const storeData = loadStateFromLocalStorage();
 
-const useCartStore = create((set, get) => ({
+const useCartStore = create(computed(
+    (set) => ({
     initialCartProducts: storeData.initialCartProducts,
     notes: storeData.notes,
     setNotes:(notes) => set({ notes: notes}),
@@ -27,18 +29,24 @@ const useCartStore = create((set, get) => ({
             newInitialCartProducts.push(product);
         }
         return { initialCartProducts: newInitialCartProducts}
-    }
-    ),
+    }),
     setCartProducts: (products) => set({ initialCartProducts: products }),
-    quantity: () => {
-        let newInitialCartProducts =  get().initialCartProducts;
-        return quantity(newInitialCartProducts)
-    },
-    priceAll: () => {
-        let newInitialCartProducts =  get().initialCartProducts;
-        return priceAll(newInitialCartProducts)
+    }),
+    (state) => {
+        const quantityCall = () => {
+            let newInitialCartProducts =  state.initialCartProducts;
+            return quantity(newInitialCartProducts)
+        }
+        const  priceAllCall = () => {
+            let newInitialCartProducts =  state.initialCartProducts;
+            return priceAll(newInitialCartProducts)
+        }
+        return {
+          quantity: quantityCall(),
+          priceAll: priceAllCall()
+        }
     }
-}))
+    ))
 
 document.addEventListener('visibilitychange', () => {
     const state = useCartStore.getState();

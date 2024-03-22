@@ -3,28 +3,21 @@ import useCartStore from "../store/cart";
 import { useNavigate } from "react-router-dom";
 
 const CartComponentWithModal = (props) => {
-  const [products, setProducts, notes, setNotes, priceAll, clearCart] = useCartStore((state) => [
-    state.initialCartProducts,
-    state.setCartProducts,
-    state.notes,
-    state.setNotes,
-    state.priceAll,
-    state.clearCart
-  ]);
+  const { initialCartProducts, setCartProducts, notes, setNotes, priceAll, clearCart } = useCartStore()
   const navigate = useNavigate();
   const updateQuantity = (id, delta) => {
-    const updatedProducts = products.map((product) => {
+    const updatedProducts = initialCartProducts.map((product) => {
       if (product.id === id) {
         return { ...product, quantity: Math.max(1, product.quantity + delta) };
       }
       return product;
     });
-    setProducts(updatedProducts);
+    setCartProducts(updatedProducts);
   };
 
   const removeProduct = (id) => {
-    const updatedProducts = products.filter(product => product.id !== id);
-    setProducts(updatedProducts);
+    const updatedProducts = initialCartProducts.filter(product => product.id !== id);
+    setCartProducts(updatedProducts);
   };
 
   const toggleModal = () => {
@@ -33,10 +26,9 @@ const CartComponentWithModal = (props) => {
 
   const handleSubmit = async () => {
     const order = await axios.post('/api/order', {
-      products,
+      products: initialCartProducts,
       notes
     });
-    console.log(order);
     navigate(`/order/${order?.data?.data.id}`);
     props.setCartOpen(false);
     clearCart();
@@ -50,8 +42,8 @@ const CartComponentWithModal = (props) => {
           <div className="bg-white p-4 rounded-lg max-w-md w-full">
             <h2 className="text-lg font-bold mb-4">Your Cart</h2>
             <ul>
-              {products.length == 0 &&  'Empty '}
-              {products.map((product) => (
+              {initialCartProducts.length == 0 &&  'Empty '}
+              {initialCartProducts.map((product) => (
                 <li key={product.id} className="flex justify-between items-center mb-2">
                   <span>{product.name}</span>
                   <div className="flex items-center">
@@ -79,7 +71,7 @@ const CartComponentWithModal = (props) => {
                 </li>
               ))}
             </ul>
-            {priceAll()/100}&nbsp;€
+            {priceAll/100}&nbsp;€
             {/* Notes text area */}
             <div className="mb-4">
               <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Notes</label>
@@ -94,7 +86,7 @@ const CartComponentWithModal = (props) => {
               ></textarea>
             </div>
             <button
-              disabled={notes == '' || products.length == 0 }
+              disabled={notes == '' || initialCartProducts.length == 0 }
               className="mt-4 px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:opacity-50"
               onClick={() => handleSubmit()}
             >
